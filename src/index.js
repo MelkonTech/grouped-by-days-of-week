@@ -57,12 +57,24 @@ export default class OrdersAnalyzer {
     // TODO: Implement
     // 1.create an output object that holds the result
     let output = {};
+
     // 2. loop over the weekdays and assign each day as key and its value is 0 in the output
+    for(let i=0; i<this.weekdays.length; i++){
+      output[this.weekdays[i]] = 0
+    }
     // 3.map through the orders
     orders.map((order) => {
-      
+      let day = new Date(order.creationDate).getDay();
+      let product = order.orderLines.find((line) => line.productId == productId);
+      if(product){
+        for (let key in output) {
+          let index = Object.keys(output).indexOf(key);
+          if (index == day) {
+            output[key] += product.quantity
+          }
+        }
+      }
     });
-
     return output;
   }
 }
